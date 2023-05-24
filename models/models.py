@@ -1,17 +1,8 @@
 from sqlalchemy import Column, Integer, Date, ForeignKey, String
-from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import relationship
+from database import Base, engine
 import requests
-
-
-
 from schemas.schemas import *
-SQLALCHEMY_DATABASE_URL = "sqlite:///./app.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
-
 
 class Client(Base):
     __tablename__ = 'clients'
@@ -79,4 +70,5 @@ class Movement(Base):
 
 Account.movements = relationship("Movement", order_by=Movement.id, back_populates="account")
 
+# Bind the models to the Base and create the tables
 Base.metadata.create_all(bind=engine)
